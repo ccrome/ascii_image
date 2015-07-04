@@ -1,4 +1,5 @@
 from PyQt4 import QtGui, QtCore
+import StringIO
 import json
 import zlib
 import binascii
@@ -122,9 +123,9 @@ class AsciiGraphicsView(QtGui.QGraphicsView):
             if d:
                 object_list.append(d)
         return object_list
-    def _extract_json(self, f):
+    
+    def _extract_json(self, lines):
         # extract the AGV= ... json from f
-        lines = f.readlines()
         for line in lines:
             magic = "%sAGV=" % self.lineStart
             try:
@@ -137,25 +138,35 @@ class AsciiGraphicsView(QtGui.QGraphicsView):
                 # This is it.  just extract the rest of the line and be done.
                 txt = line[len(magic):]
                 return json.loads(txt)
-            
+
+        
+    def asciiToGraphics(self, text):
+        """convert whatever is in the asciiTextEdit field into the graphics view.  i.e. equivalent of load file"""
+        lines = text.split("\n")
+        d = self._extract_json(lines)
+        self._to_graphics(d)
+    
     def load(self):
         filename = QtGui.QFileDialog.getOpenFileName(filter = "*.agv")
         if filename:
             f = open(filename, "r")
-            d = self._extract_json(f)
-            try:
-                currentObjects = self.loadSaveableStruct(d)
-            except Exception as e:
-                mb = QtGui.QMessageBox()
-                traceback.print_exc()
-                mb.setText("Couldn't read %s.  Error returned is %s" % (filename, e))
-                mb.exec_()
-                return
-            
-            self.new()
-            for obj in currentObjects:
-                self.currentObjects.append(obj)
-                self.scene.addItem(obj)
+            d = self._extract_json(f.readlines())
+            self._to_graphics(d)
+
+    def _to_graphics(self, d):
+        try:
+            currentObjects = self.loadSaveableStruct(d)
+        except Exception as e:
+            mb = QtGui.QMessageBox()
+            traceback.print_exc()
+            mb.setText("Couldn't read %s.  Error returned is %s" % (filename, e))
+            mb.exec_()
+            return
+
+        self.new()
+        for obj in currentObjects:
+            self.currentObjects.append(obj)
+            self.scene.addItem(obj)
         
     def new(self):
         """remove all items from the current scene"""
@@ -169,24 +180,37 @@ class AsciiGraphicsView(QtGui.QGraphicsView):
         asc = font2.create_image(objs)
         return asc
         
+    def graphicsToAscii(self):
+        """Convert what is in the graphics view into a text string and return it"""
+        ascii_text = self._to_ascii()
+        return ascii_text
+
+    def _to_ascii(self):
+        objs = self.getSaveableStruct()
+        js = json.dumps(objs) # , indent=4, separators=(',', ': '))
+        zjs = binascii.b2a_hex(zlib.compress(js, 9))
+        ascii_image = self.convertToAsciiImage()
+        f = StringIO.StringIO()
+        f.write(self.commentStart)
+        for line in ascii_image:
+            f.write(self.lineStart)
+            f.write(line)
+            f.write(self.lineEnd)
+        f.write(self.lineStart)
+        f.write("AGV=")
+        f.write(js)
+        f.write(self.lineEnd)
+        txt = f.getvalue()
+        f.close()
+        return txt
+    
     def save(self):
         # save the current items.
         filename = QtGui.QFileDialog.getSaveFileName(filter = "*.agv")
         if filename:
-            objs = self.getSaveableStruct()
-            js = json.dumps(objs) # , indent=4, separators=(',', ': '))
-            zjs = binascii.b2a_hex(zlib.compress(js, 9))
+            ascii_text = self._to_ascii()
             f = open(filename, "w")
-            ascii_image = self.convertToAsciiImage()
-            f.write(self.commentStart)
-            for line in ascii_image:
-                f.write(self.lineStart)
-                f.write(line)
-                f.write(self.lineEnd)
-            f.write(self.lineStart)
-            f.write("AGV=")
-            f.write(js)
-            f.write(self.lineEnd)
+            f.write(ascii_text)
             f.close()
             
             

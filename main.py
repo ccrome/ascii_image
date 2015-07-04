@@ -27,6 +27,20 @@ class UiMainWindow(ascii_image.Ui_MainWindow):
         self.action_Save.triggered.connect(self.graphicsView.save)
         self.action_Open.triggered.connect(self.graphicsView.load)
         
+        self.buttonToAscii.clicked.connect(self.graphicsToAscii)
+        self.buttonToGraphics.clicked.connect(self.asciiToGraphics)
+        
+
+    def graphicsToAscii(self):
+        text = self.graphicsView.graphicsToAscii()
+        self.asciiTextEdit.setText(text)
+        
+    def asciiToGraphics(self):
+        """convert whatever is in the asciiTextEdit field into the graphics view.  i.e. equivalent of load file"""
+        text = str(self.asciiTextEdit.toPlainText())
+        self.graphicsView.asciiToGraphics(text)
+
+        
     def getSelectedTool(self):
         return self.objectActionGroup
         

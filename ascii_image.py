@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ascii_image.ui'
 #
-# Created: Tue Jun 30 09:06:01 2015
+# Created: Sat Jul 04 19:15:33 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,17 +29,39 @@ class Ui_MainWindow(object):
         MainWindow.resize(940, 697)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.horizontalLayout = QtGui.QHBoxLayout(self.centralwidget)
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.horizontalLayout_3 = QtGui.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
         self.splitter = QtGui.QSplitter(self.centralwidget)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName(_fromUtf8("splitter"))
-        self.groupBox = QtGui.QGroupBox(self.splitter)
-        self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.graphicsView = AsciiGraphicsView(self.splitter)
         self.graphicsView.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
         self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
-        self.horizontalLayout.addWidget(self.splitter)
+        self.groupBox = QtGui.QGroupBox(self.splitter)
+        self.groupBox.setObjectName(_fromUtf8("groupBox"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.groupBox)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.verticalLayout = QtGui.QVBoxLayout()
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.buttonToGraphics = QtGui.QPushButton(self.groupBox)
+        self.buttonToGraphics.setObjectName(_fromUtf8("buttonToGraphics"))
+        self.horizontalLayout.addWidget(self.buttonToGraphics)
+        self.buttonToAscii = QtGui.QPushButton(self.groupBox)
+        self.buttonToAscii.setObjectName(_fromUtf8("buttonToAscii"))
+        self.horizontalLayout.addWidget(self.buttonToAscii)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.asciiTextEdit = QtGui.QTextEdit(self.groupBox)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Courier New"))
+        self.asciiTextEdit.setFont(font)
+        self.asciiTextEdit.setObjectName(_fromUtf8("asciiTextEdit"))
+        self.verticalLayout.addWidget(self.asciiTextEdit)
+        self.verticalLayout_2.addLayout(self.verticalLayout)
+        self.horizontalLayout_3.addWidget(self.splitter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 940, 21))
@@ -105,6 +127,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow", None))
         self.groupBox.setTitle(_translate("MainWindow", "GroupBox", None))
+        self.buttonToGraphics.setText(_translate("MainWindow", "<", None))
+        self.buttonToAscii.setText(_translate("MainWindow", ">", None))
         self.menu_File.setTitle(_translate("MainWindow", "&File", None))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit", None))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar", None))
