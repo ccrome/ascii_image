@@ -5,6 +5,7 @@ import sys
 class UiMainWindow(ascii_image.Ui_MainWindow):
     def __init__(self, MainWindow):
         super(UiMainWindow, self).__init__()
+        self.MainWindow = MainWindow
         self.setupUi(MainWindow)
         self.graphicsView.addAction(self.actionLine)
         self.graphicsView.addAction(self.actionCircle)
@@ -26,11 +27,24 @@ class UiMainWindow(ascii_image.Ui_MainWindow):
 
         self.action_Save.triggered.connect(self.graphicsView.save)
         self.action_Open.triggered.connect(self.graphicsView.load)
+        self.action_New.triggered.connect(self.graphicsView.new)
         
         self.buttonToAscii.clicked.connect(self.graphicsToAscii)
         self.buttonToGraphics.clicked.connect(self.asciiToGraphics)
-        
 
+        self.buttonCopy.clicked.connect(self.copyToClipboard)
+        self.buttonPaste.clicked.connect(self.pasteFromClipboard)
+        
+    def copyToClipboard(self):
+        text = self.asciiTextEdit.toPlainText()
+        QtGui.QApplication.instance().clipboard().setText(text)
+        self.MainWindow.statusBar().showMessage("Copied to clipboard")
+        
+    def pasteFromClipboard(self):
+        text = QtGui.QApplication.instance().clipboard().text()
+        self.asciiTextEdit.setText(text)
+        self.asciiToGraphics    ()
+        
     def graphicsToAscii(self):
         text = self.graphicsView.graphicsToAscii()
         self.asciiTextEdit.setText(text)

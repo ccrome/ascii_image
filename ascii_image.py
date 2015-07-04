@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ascii_image.ui'
 #
-# Created: Sat Jul 04 19:15:33 2015
+# Created: Sat Jul 04 19:37:14 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -51,6 +51,12 @@ class Ui_MainWindow(object):
         self.buttonToAscii = QtGui.QPushButton(self.groupBox)
         self.buttonToAscii.setObjectName(_fromUtf8("buttonToAscii"))
         self.horizontalLayout.addWidget(self.buttonToAscii)
+        self.buttonCopy = QtGui.QPushButton(self.groupBox)
+        self.buttonCopy.setObjectName(_fromUtf8("buttonCopy"))
+        self.horizontalLayout.addWidget(self.buttonCopy)
+        self.buttonPaste = QtGui.QPushButton(self.groupBox)
+        self.buttonPaste.setObjectName(_fromUtf8("buttonPaste"))
+        self.horizontalLayout.addWidget(self.buttonPaste)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -129,6 +135,8 @@ class Ui_MainWindow(object):
         self.groupBox.setTitle(_translate("MainWindow", "GroupBox", None))
         self.buttonToGraphics.setText(_translate("MainWindow", "<", None))
         self.buttonToAscii.setText(_translate("MainWindow", ">", None))
+        self.buttonCopy.setText(_translate("MainWindow", "Copy", None))
+        self.buttonPaste.setText(_translate("MainWindow", "Paste", None))
         self.menu_File.setTitle(_translate("MainWindow", "&File", None))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit", None))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar", None))
